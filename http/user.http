@@ -1,0 +1,24 @@
+### 회원가입
+POST http://localhost:8080/signup
+Content-Type: application/json
+Accept: */*
+
+{
+  "userId": "user02@gmail.com",
+  "userPass": "user02",
+  "userNick": "휘뚜루마뚜루",
+  "userPhone": "010-2345-3456",
+  "userSignup": "2024-06-19",
+  "userLatest": "2024-06-19",
+  "userAuth": "ADMIN"
+}
+
+### 로그인
+POST http://localhost:8080/login
+Content-Type: application/json
+Accept: */*
+
+{
+  "userId": "user02@gmail.com",
+  "userPass": "user02"
+}

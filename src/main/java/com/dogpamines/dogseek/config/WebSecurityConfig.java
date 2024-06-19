@@ -1,6 +1,8 @@
 package com.dogpamines.dogseek.config;
 
 import com.dogpamines.dogseek.auth.filter.CustomAuthenticationFilter;
+import com.dogpamines.dogseek.auth.filter.JwtAuthorizationFilter;
+import com.dogpamines.dogseek.auth.handler.CustomAuthFailureHandler;
 import com.dogpamines.dogseek.auth.handler.CustomAuthSuccessHandler;
 import com.dogpamines.dogseek.auth.handler.CustomAuthenticationProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -13,10 +15,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -45,13 +45,24 @@ public class WebSecurityConfig {
 
     /* 사용자 요청(request) 시 수행되는 메소드 */
     private JwtAuthorizationFilter jwtAuthorizationFilter() {   // jwtAuthorizationFilter은 authenticationManager가 필요함
-        return new JwtAuthorizationFilter(AuthenticationManager());
+        return new JwtAuthorizationFilter(authenticationManager());
     }
 
     /* Authentication의 인증 메소드를 제공하는 매니저(= Provider의 인터페이스)를 반환하는 메소드 */
     @Bean
     public AuthenticationManager authenticationManager() {  // authenticationManager은 authenticationProvider가 필요함
-        return new ProviderManager(CustomAuthenticationProvider()); // authenticationProvider는 제공되지만 custom 할 것
+        return new ProviderManager(customAuthenticationProvider()); // authenticationProvider는 제공되지만 custom 할 것
+    }
+
+    @Bean
+    public CustomAuthenticationProvider customAuthenticationProvider() {
+        return new CustomAuthenticationProvider();
+    }
+
+    /* 비밀번호를 암호화하는 인코더를 반환하는 메소드 */
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /* 사용자의 인증 요청을 가로채서 로그인 로직을 수행하는 필터를 반환하는 메소드 */
@@ -65,13 +76,12 @@ public class WebSecurityConfig {
         return customAuthenticationFilter;
     }
 
-
     /* 사용자 정보가 맞을 경우 (=로그인 성공 시) 수행하는 핸들러를 반환하는 메소드 */
     private CustomAuthSuccessHandler customAuthLoginSuccessHandler() {
         return new CustomAuthSuccessHandler();
     }
 
-    private AuthenticationFailureHandler customAuthLoginFailureHandler() {
-        return null;
+    private CustomAuthFailureHandler customAuthLoginFailureHandler() {
+        return new CustomAuthFailureHandler();
     }
 }

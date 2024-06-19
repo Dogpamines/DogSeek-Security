@@ -4,4 +4,45 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dogpamines.dogseek.user.model.dao.UserMapper">
 
+    <resultMap id="login" type="com.dogpamines.dogseek.user.model.dto.UserDTO">
+        <id property="userCode" column="USER_CODE"/>
+        <result property="userPlatform" column="USER_PLATFORM"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userPass" column="USER_PW"/>
+        <result property="userNick" column="USER_NICK"/>
+        <result property="userPhone" column="USER_PHONE"/>
+        <result property="userSignup" column="USER_SIGNUP"/>
+        <result property="userLatest" column="USER_LATEST"/>
+        <result property="userAuth" column="USER_AUTH"/>
+    </resultMap>
+
+    <insert id="regist" parameterType="com.dogpamines.dogseek.user.model.dto.UserDTO">
+        INSERT INTO USER
+        (
+          USER_ID
+        , USER_PW
+        , USER_NICK
+        , USER_PHONE
+        , USER_SIGNUP
+        , USER_LATEST
+        , USER_AUTH
+        )
+        VALUES
+        (
+          #{ userId }
+        , #{ userPass }
+        , #{ userNick }
+        , #{ userPhone }
+        , #{ userSignup}
+        , #{ userLatest }
+        , #{ userAuth }
+        )
+    </insert>
+
+    <select id="findByUsername" resultMap="login">
+        SELECT *
+          FROM USER
+         WHERE USER_ID = #{ userId }
+    </select>
+
 </mapper>

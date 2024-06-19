@@ -14,18 +14,20 @@ public class UserDTO {
     private String userId;
     private String userPass;
     private String userNick;
+    private String userPhone;
     private Date userSignup;
     private Date userLatest;
     private UserRole userAuth;
 
     public UserDTO(){}
 
-    public UserDTO(int userCode, String userPlatform, String userId, String userPass, String userNick, Date userSignup, Date userLatest, UserRole userAuth) {
+    public UserDTO(int userCode, String userPlatform, String userId, String userPass, String userNick, String userPhone, Date userSignup, Date userLatest, UserRole userAuth) {
         this.userCode = userCode;
         this.userPlatform = userPlatform;
         this.userId = userId;
         this.userPass = userPass;
         this.userNick = userNick;
+        this.userPhone = userPhone;
         this.userSignup = userSignup;
         this.userLatest = userLatest;
         this.userAuth = userAuth;
@@ -102,6 +104,14 @@ public class UserDTO {
         this.userAuth = userAuth;
     }
 
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -110,9 +120,10 @@ public class UserDTO {
                 ", userId='" + userId + '\'' +
                 ", userPass='" + userPass + '\'' +
                 ", userNick='" + userNick + '\'' +
+                ", userPhone='" + userPhone + '\'' +
                 ", userSignup=" + userSignup +
                 ", userLatest=" + userLatest +
-                ", userAuth='" + userAuth + '\'' +
+                ", userAuth=" + userAuth +
                 '}';
     }
 }

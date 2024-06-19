@@ -2,7 +2,6 @@ package com.dogpamines.dogseek.common.utils;
 
 import com.dogpamines.dogseek.user.model.dto.UserDTO;
 import io.jsonwebtoken.*;
-import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +56,7 @@ public class TokenUtils {
     }
 
     /* 토큰을 복호화 하는 메소드 */
-    private static Claims getClaimsFromToken(String token) {
+    public static Claims getClaimsFromToken(String token) {
 
         return Jwts.parser()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecretKey))
